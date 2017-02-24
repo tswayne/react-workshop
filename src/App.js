@@ -16,7 +16,7 @@ class Results extends Component {
 
 class Input extends Component {
   render() {
-    return( <input onChangeEvent={this.props.onChange} type="text"/>)
+    return( <input onChange={this.props.onChangeEvent} type="text"/>)
   }
 }
 
