@@ -1,44 +1,35 @@
 import React, { Component } from 'react';
 import './App.css';
-import {games} from './video-game-titles';
-
-class Results extends Component {
-  render() {
-    return (
-      <ul>
-        {this.props.results.map((result, index) => {
-          return (<li key={index}>{result}</li>)
-        })}
-      </ul>
-    )
-  }
-}
-
-class Input extends Component {
-  render() {
-    return( <input onChangeEvent={this.props.onChange} type="text"/>)
-  }
-}
+import {ShoppingList, ListItem, Input} from './app/index'
 
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = {results: []}
+    this.state = {shoppingList: [], currentInput: ''}
   }
 
-  onUpdate = (e) => {
-    const matches = games.filter(game => {
-      return game.toLowerCase().includes(e.target.value.toLowerCase())
-    })
-    this.setState({results: matches})
+  onType = (e) => {
+    this.setState({currentInput: e.target.value})
+  }
+
+  onAdd = () => {
+    const item = {name: this.state.currentInput, completed: false};
+    const shoppingList = [ ...this.state.shoppingList, item ];
+    this.setState({shoppingList, currentInput: ''})
+  }
+
+  purchaseItem = (index) => {
+    let shoppingList = [...this.state.shoppingList];
+    shoppingList[index].completed = !shoppingList[index].completed;
+    this.setState({shoppingList})
   }
 
   render() {
     return (
       <div className="App">
         <h2>React workshop 2</h2>
-        <Input onChangeEvent={this.onUpdate} type="text"/>
-        <Results results={this.state.results}/>
+        <Input onChange={this.onType} onClick={this.onAdd} value={this.state.currentInput} type="text"/>
+        <ShoppingList list={this.state.shoppingList} onClick={this.purchaseItem}/>
       </div>
     );
   }
